@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: devinventory
+      MONGO_INITDB_ROOT_USERNAME: devinventory
+      MONGO_INITDB_ROOT_PASSWORD: devinventory
+    volumes:
+      - "mongodata:/data/db"
+volumes:
+  mongodata: {}
