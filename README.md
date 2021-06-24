@@ -26,7 +26,7 @@ docker-compose up -d
 
 Set [configuration environment variables](#configuration).
 
-If you are using the docker Postgres server you must set the host to `postgres`. The `docker-compose.dev.yml` file provides a pre-setup bash shell with these environment variables set. Run it with:
+If you are using the docker Postgres server you must set the host to `postgres`. The `docker-compose.dev.yml` file provides a pre-setup bash shell with configuration environment variables set. Run it with:
 
 ```
 ./scripts/docker-compose up -d --build
