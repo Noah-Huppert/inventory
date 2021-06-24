@@ -26,7 +26,7 @@ docker-compose up -d
 
 Set [configuration environment variables](#configuration).
 
-If you are using the docker Postgres server you must set the host to `postgres`, and the username, password, and database all to `devinventory`. The `docker-compose.dev.yml` file provides a pre-setup bash shell with these environment variables set. Run it with:
+If you are using the docker Postgres server you must set the host to `postgres`. The `docker-compose.dev.yml` file provides a pre-setup bash shell with these environment variables set. Run it with:
 
 ```
 ./scripts/docker-compose up -d --build
@@ -44,9 +44,11 @@ This runs `yarn dev-server` and `yarn dev-frontend` in parallel.
 # Configuration
 The server is configured via environment variables, all prefixed with `INVENTORY_APP_`.
 
-- `INVENTORY_APP_API_HTTP_PORT` (Number): Port on which HTTP API will listen
-- `INVENTORY_APP_POSTGRES_HOST` (String): Host of Postgres database server
-- `INVENTORY_APP_POSTGRES_PORT` (Number): Port of Postgres database server
-- `INVENTORY_APP_POSTGRES_USERNAME` (String): Postgres database server login username
-- `INVENTORY_APP_POSTGRES_PASSWORD` (String): Postgres database server login password
-- `INVENTORY_APP_POSTGRES_DB` (String): Name of the database within Postgres to store data
+- API
+  - HTTP Port (`INVENTORY_APP_API_HTTP_PORT`, Number, Default `8000`): Port on which HTTP API will listen
+- Postgres
+  - Host (`INVENTORY_APP_POSTGRES_HOST`, String, Default `localhost`): Host of Postgres database server
+  - Port (`INVENTORY_APP_POSTGRES_PORT`, Number, Default `5432`): Port of Postgres database server
+  - Username (`INVENTORY_APP_POSTGRES_USERNAME`, String, Default `devinventory`): Postgres database server login username
+  - Password (`INVENTORY_APP_POSTGRES_PASSWORD`, String, Default `devinventory`): Postgres database server login password
+  - Database (`INVENTORY_APP_POSTGRES_DB`, String, Default `devinventory`): Name of the database within Postgres to store data
