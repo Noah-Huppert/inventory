@@ -1,4 +1,4 @@
 FROM node:latest
 
 WORKDIR /mnt
-ENTRYPOINT /bin/bash -c "while true; do sleep 10; done"
+ENTRYPOINT /bin/bash -c "while true; do sleep 1; done"

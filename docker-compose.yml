@@ -1,13 +1,15 @@
 version: "3.9"
 services:
-  mongo:
-    image: mongo:latest
+  postgres:
+    image: postgres:latest
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: devinventory
-      MONGO_INITDB_ROOT_USERNAME: devinventory
-      MONGO_INITDB_ROOT_PASSWORD: devinventory
+      POSTGRES_USER: devinventory
+      POSTGRES_PASSWORD: devinventory
+      POSTGRES_DB: devinventory
     volumes:
-      - "mongodata:/data/db"
+      - "postgresdata:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
 volumes:
-  mongodata: {}
+  postgresdata:

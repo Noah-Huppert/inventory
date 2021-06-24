@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import winston, { Logger } from "winston";
 import "reflect-metadata";
+import { createConnection, Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 /**
  * Configuration for server.
@@ -17,35 +18,68 @@ interface ServerCFG {
   },
 
   /**
-   * MongoDB.
+   * Postgres.
    */
-  db: {
+  postgres: {
     /**
-     * Connection URI.
+     * Server host.
      */
-    uri: string,
+    host: string,
+
+    /**
+     * Server port.
+     */
+    port: number,
+
+    /**
+     * Login username.
+     */
+    username: string,
+    
+    /**
+     * Login password.
+     */
+    password: string,
+
+    /**
+     * Name of database in which to operate.
+     */
+    db: string,
   },
 }
 
-interface DBCtx {
+@Entity()
+class Container {
   /**
-   * Database connection.
+   * Unique container identifier.
    */
-  conn: mongoose.Mongoose,
+  @PrimaryGeneratedColumn()
+  id: number;
 
   /**
-   * Containers collection.
+   * Human friendly name of container.
    */
-  containers: mongoose.Model,
+  @Column({ type: "text", nullable: false })
+  name: string;
+}
+
+@Entity()
+class Item {
+  /**
+   * Unique item identifier.
+   */
+  @PrimaryGeneratedColumn()
+  id: number;
 
   /**
-   * Items collection.
+   * Human friendly name of item.
    */
-  items: mongoose.Model,
+  @Column({ type: "text", nullable: false })
+  name: string;
 }
 
 /**
- * Server which provides all functionlity.
+ * Server which provides all functionlity. The init() method must be called before this class can be used.
  */
 class Server {
   /**
@@ -61,10 +95,10 @@ class Server {
   /**
    * Database connection.
    */
-  db: DBCtx;
+  db?: object;
 
   /**
-   * Create and initialize server.
+   * Create and initialize server. The init() method must be called after.
    */
   constructor() {
     // Configuration
@@ -72,8 +106,12 @@ class Server {
       api: {
         httpPort: Number(process.env.INVENTORY_APP_API_HTTP_PORT) || 8000,
       },
-      mongo: {
-        uri: process.env.INVENTORY_APP_MONGO_URI || "mongodb://devinventory:devinventory@mongo:27017/devinventory",
+      postgres: {
+        host: process.env.INVENTORY_APP_POSTGRES_HOST || "localhost",
+        port: Number(process.env.INVENTORY_APP_POSTGRES_PORT) || 5432,
+        username: process.env.INVENTORY_APP_POSTGRES_USERNAME || "devinventory",
+        password: process.env.INVENTORY_APP_POSTGRES_PASSWORD || "devinventory",
+        db: process.env.INVENTORY_APP_POSTGRES_DB || "devinventory",
       },
     };
 
@@ -87,38 +125,27 @@ class Server {
         }),
       ],
     });
-
-    // Connect to database
-    mongoose.connect(this.CFG.mongo.uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    
-    dbConn = mongoose.connection;
-    
-    dbConn.on("error", (e) => {
-      this.log.error("mongoose error", { error: e });
-    });
-    await new Promise((resolve, reject) => {
-      dbConn.once("open", resolve);
-    });
-    
-    this.db = dbCtx(dbConn);
   }
 
   /**
-   * Create a DBCtx.
-   * @param dbConn Mongoose database connection.
-   * @returns Database context.
+   * Performs asynchronous initialization tasks which could not be completed in the constructor.
    */
-  dbCtx(dbConn: mongoose.Connection): DBCtx {
-    const containersSchema = new mongoose.Schema({
-      name: String,
-      parent
+  async init() {
+    // Connect to database
+    this.db = await createConnection({
+      type: "postgres",
+      host: this.CFG.postgres.host,
+      port: this.CFG.postgres.port,
+      username: this.CFG.postgres.username,
+      password: this.CFG.postgres.password,
+      database: this.CFG.postgres.db,
+      entities: [
+        Container,
+        Item,
+      ],
+      synchronize: true,
+      logging: false,
     });
-    
-    return {
-      conn: dbConn,
-      containers: containersModel,
-      items: itemsModel,
-    };
   }
   
   /**
@@ -160,7 +187,7 @@ class Server {
 }
 
 const server = new Server();
-server.run().then(() => {
+server.init().then(() => server.run()).then(() => {
   server.log.info("done");
 }).catch((e) => {
   server.log.error("fatal error", { error: e });

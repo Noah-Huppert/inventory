@@ -7,8 +7,14 @@ services:
     volumes:
       - "./:/mnt"
     environment:
-      INVENTORY_APP_MONGO_URI: mongodb://devinventory:devinventory@mongo/devinventory
+      INVENTORY_APP_POSTGRES_HOST: postgres
+      INVENTORY_APP_POSTGRES_USERNAME: devinventory
+      INVENTORY_APP_POSTGRES_PASSWORD: devinventory
+      INVENTORY_APP_POSTGRES_DB: devinventory
     ports:
+      # Frontend dev server
       - "1234:1234"
-      - "33935:33935"
+      - "33935:33935" # Hot-reload web socket
+
+      # Server
       - "8000:8000"
