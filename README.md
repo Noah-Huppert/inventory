@@ -45,10 +45,22 @@ This runs `yarn dev-server` and `yarn dev-frontend` in parallel.
 The server is configured via environment variables, all prefixed with `INVENTORY_APP_`.
 
 - API
-  - HTTP Port (`INVENTORY_APP_API_HTTP_PORT`, Number, Default `8000`): Port on which HTTP API will listen
+  - HTTP Port (Number): Port on which HTTP API will listen
+    - Env var: `INVENTORY_APP_API_HTTP_PORT`
+	- Default: `8000`
 - Postgres
-  - Host (`INVENTORY_APP_POSTGRES_HOST`, String, Default `localhost`): Host of Postgres database server
-  - Port (`INVENTORY_APP_POSTGRES_PORT`, Number, Default `5432`): Port of Postgres database server
-  - Username (`INVENTORY_APP_POSTGRES_USERNAME`, String, Default `devinventory`): Postgres database server login username
-  - Password (`INVENTORY_APP_POSTGRES_PASSWORD`, String, Default `devinventory`): Postgres database server login password
-  - Database (`INVENTORY_APP_POSTGRES_DB`, String, Default `devinventory`): Name of the database within Postgres to store data
+  - Host (String): Host of Postgres database server
+    - Env var: `INVENTORY_APP_POSTGRES_HOST`
+	- Default: `localhost`
+  - Port (Number): Port of Postgres database server
+    - Env var: `INVENTORY_APP_POSTGRES_PORT`
+	- Default: `5432`
+  - Username (String): Postgres database server login username
+    - Env var: `INVENTORY_APP_POSTGRES_USERNAME`
+	- Default: `devinventory`
+  - Password (String): Postgres database server login password
+    - Env var: `INVENTORY_APP_POSTGRES_PASSWORD`
+	- Default: `devinventory`
+  - Database (String): Name of the database within Postgres to store data
+    - Env var: `INVENTORY_APP_POSTGRES_DB`
+	- Default: `devinventory`
