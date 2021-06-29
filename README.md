@@ -32,7 +32,7 @@ Then follow instructions in [Development Tasks](#development-tasks), and run com
 > ```
 
 ## Self Setup Development
-A Postgres container and an environment which has NodeJS and NPM installed is required.
+A Postgres server and an environment which has NodeJS and NPM installed is required.
 
 Set [configuration environment variables](#configuration) with details on where the Postgres server is running, as well as any other relevant values.
 
