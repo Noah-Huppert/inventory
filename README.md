@@ -12,34 +12,47 @@ Web application to track items and their location.
 # Development
 The server and frontend are written in Typescript, dependencies are managed with Yarn, and the server is run with NodeJS. Data is stored in Postgres.
 
-Install dependencies:
+## Docker Development
+A development environment is provided, this starts a Postgres server, sets all configuration environment variables, and opens a Bash shell in the repository root.
+
+To start this environment and open the Bash shell run:
+
+```
+./scripts/container-dev.sh
+```
+
+Then follow instructions in [Development Tasks](#development-tasks), and run commands inside this new shell.
+
+> _Behind the scenes_:  
+> This script starts the containers specified in `docker-compose.yml` and `docker-compose.dev.yml` files. Then executes a Bash process in the `inventorydev` container. This is equivalent to:
+> 
+> ```
+> ./scripts/docker-compose.sh up -d --build
+> ./scripts/docker-compose.sh exec inventorydev bash
+> ```
+
+## Self Setup Development
+A Postgres container and an environment which has NodeJS and NPM installed is required.
+
+Set [configuration environment variables](#configuration) with details on where the Postgres server is running, as well as any other relevant values.
+
+Once configuration has been set follow instructions in [Development Tasks](#development-tasks) section.
+
+## Development Tasks
+First install dependencies:
 
 ```
 yarn install
 ```
 
-Start Postgres. The `docker-compose.yml` file provides a pre-setup Postgres server, run it with:
-
-```
-docker-compose up -d
-```
-
-Set [configuration environment variables](#configuration).
-
-If you are using the docker Postgres server you must set the host to `postgres`. The `docker-compose.dev.yml` file provides a pre-setup bash shell with configuration environment variables set. Run it with:
-
-```
-./scripts/docker-compose up -d --build
-./scripts/docker-compose exec inventorydev bash
-```
-
-Start development servers which rebuild and reload the server and frontend with:
+Then start development servers which rebuild and reload the server and frontend with:
 
 ```
 yarn dev
 ```
 
-This runs `yarn dev-server` and `yarn dev-frontend` in parallel.
+> _Behind the scenes_:  
+> This runs `yarn dev-server` and `yarn dev-frontend` in parallel.
 
 # Configuration
 The server is configured via environment variables, all prefixed with `INVENTORY_APP_`.
