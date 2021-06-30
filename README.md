@@ -57,21 +57,3 @@ This script can also perform other helpful tasks based on the option provided:
 
 ## Self Setup Development Environment
 A Postgres server and an environment which has NodeJS and NPM installed is required.
-
-Set [configuration environment variables](#configuration) with details on where the Postgres server is running, as well as any other relevant values.
-
-## Development Tasks
-First install dependencies:
-
-```
-yarn install
-```
-
-Then start development servers which rebuild and reload the server and frontend with:
-
-```
-yarn dev
-```
-
-> _Behind the scenes_:  
-> This runs `yarn dev-server` and `yarn dev-frontend` in parallel.
