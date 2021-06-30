@@ -4,7 +4,6 @@ Item inventory management dashboard.
 # Table of Contents
 - [Overview](#overview)
 - [Development](#development)
-- [Configuration](#configuration)
 
 # Overview
 Web application to track items and their location.
@@ -19,17 +18,7 @@ The frontend (located in [`./frontend/`](./frontend/)) uses React.
 First setup a [development environment](#development-environment). Then install dependencies for the frontend and server:
 
 ```
-# Frontend
-cd ./frontend
-yarn install
-
-cd ..
-
-# Server
-cd ./server
-yarn install
-
-cd ..
+./scripts/install.sh
 ```
 
 Then run the frontend and server development setups. This will auto-build and reload code when it changes.
@@ -49,8 +38,14 @@ A development environment is provided, this starts a Postgres server, sets all c
 To start this environment and open the Bash shell run:
 
 ```
-./scripts/container-dev.sh
+./scripts/container-dev.sh -s
 ```
+
+This script can also perform other helpful tasks based on the option provided:
+
+- `-s`: Open a shell prompt
+- `-d`: Run both the server and frontend's development setups
+- `-i`: Install dependencies for both the server and frontend
 
 > _Behind the scenes_:  
 > This script starts the containers specified in `docker-compose.yml` and `docker-compose.dev.yml` files. Then executes a Bash process in the `inventorydev` container. This is equivalent to:
@@ -80,27 +75,3 @@ yarn dev
 
 > _Behind the scenes_:  
 > This runs `yarn dev-server` and `yarn dev-frontend` in parallel.
-
-# Configuration
-The server is configured via environment variables, all prefixed with `INVENTORY_APP_`.
-
-- API
-  - HTTP Port (Number): Port on which HTTP API will listen
-    - Env var: `INVENTORY_APP_API_HTTP_PORT`
-	- Default: `8000`
-- Postgres
-  - Host (String): Host of Postgres database server
-    - Env var: `INVENTORY_APP_POSTGRES_HOST`
-	- Default: `localhost`
-  - Port (Number): Port of Postgres database server
-    - Env var: `INVENTORY_APP_POSTGRES_PORT`
-	- Default: `5432`
-  - Username (String): Postgres database server login username
-    - Env var: `INVENTORY_APP_POSTGRES_USERNAME`
-	- Default: `devinventory`
-  - Password (String): Postgres database server login password
-    - Env var: `INVENTORY_APP_POSTGRES_PASSWORD`
-	- Default: `devinventory`
-  - Database (String): Name of the database within Postgres to store data
-    - Env var: `INVENTORY_APP_POSTGRES_DB`
-	- Default: `devinventory`
