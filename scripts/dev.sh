@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+prog_dir=$(dirname $(realpath "$0"))
+
 die() {
   echo "Error: $@" >&2
   exit 1
@@ -8,6 +10,11 @@ check() {
   if [[ "$?" != "0" ]]; then
 	  die "$@"
   fi
+}
+
+checkcd() {
+  cd "$@"
+  check "Failed to change into: $@"
 }
 
 while getopts "hx" opt; do
@@ -43,10 +50,12 @@ done
 
 pids=()
 
-yarn dev-server &
+checkcd "$prog_dir/../server"
+yarn dev &
 pids+=("dev-server $!")
 
-yarn dev-frontend &
+checkcd "$prog_dir/../frontend"
+yarn dev &
 pids+=("dev-frontend $!")
 
 cleanup() {

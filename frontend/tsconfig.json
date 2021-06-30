@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "dist/",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "module": "commonjs"
+  }
+}

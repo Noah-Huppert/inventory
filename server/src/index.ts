@@ -1,7 +1,14 @@
 import express, { Express } from "express";
 import winston, { Logger } from "winston";
 import "reflect-metadata";
-import { createConnection, Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  createConnection,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
 /**
  * Configuration for server.
@@ -48,6 +55,9 @@ interface ServerCFG {
   },
 }
 
+/**
+ * Represents an object which holds items.
+ */
 @Entity()
 class Container {
   /**
@@ -57,12 +67,33 @@ class Container {
   id: number;
 
   /**
-   * Human friendly name of container.
+   * Human friendly name.
    */
   @Column({ type: "text", nullable: false })
   name: string;
+
+  /**
+   * Parent container.
+   */
+  @ManyToOne(() => Container, container => container.children)
+  parent: Container;
+
+  /**
+   * Child containers.
+   */
+  @OneToMany(() => Container, container => container.parent)
+  children: Container[];
+
+  /**
+   * Items being stored within the container.
+   */
+  @OneToMany(() => Item, item => item.container)
+  items: Item[];
 }
 
+/**
+ * Object which is stored.
+ */
 @Entity()
 class Item {
   /**
@@ -72,10 +103,16 @@ class Item {
   id: number;
 
   /**
-   * Human friendly name of item.
+   * Human friendly name.
    */
   @Column({ type: "text", nullable: false })
   name: string;
+
+  /**
+   * Container in which item is stored.
+   */
+  @ManyToOne(() => Container, container => container.items, { nullable: true })
+  container: Container;
 }
 
 /**
